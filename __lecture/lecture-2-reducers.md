@@ -81,12 +81,12 @@ function reducer(state, action) {
     case 'RESET':
       return 0;
     default:
-      throw new Error('Unrecognized action');
+      throw new Error(`Unrecognized action: ${action.type}`);
   }
 }
 
 const App = () => {
-  const [state, dispatch] = useReducer(reducer, 0);
+  const [state, dispatch] = React.useReducer(reducer, 0);
 
   return (
     <>
@@ -124,6 +124,7 @@ const Reset = ({ dispatch }) => {
 an "action" is a plain Javascript object that has a "type" property.
 
 ```js
+//uppercase is just to distinguish actions
 { type: 'INCREMENT' }
 
 { type: 'WIN_GAME' }
@@ -153,6 +154,7 @@ Actions _describe an event_. They don't dictate what should happen to the state.
 
 // Bad action: dictates what should happen with the state
 { type: 'set-user-email', value: '' }
+// 'accept-user-email' maybe
 { type: 'set-user-password', value: '' }
 ```
 
@@ -176,18 +178,22 @@ If not, what could be improved?
 
 ```js
 { type: 'click-to-open-modal', state: { newModal: 'login' } }
+//'click-login-link' would be better, 
 ```
 
 ---
 
 ```js
 { type: 'toggle-terms-of-service', agreed: true }
+//gud toggle good for booleans
 ```
 
 ---
 
 ```js
 { type: 'set-player-coordinates', x: 41, y: 22 }
+//'move-player'
+//'read-player-coords'
 ```
 
 ---
@@ -196,6 +202,8 @@ If not, what could be improved?
 {
   event: 'logout';
 }
+//has not type! 
+//perhaps "click-logout" or "handle-logout" or 'click-logout-link'
 ```
 
 ---
@@ -220,7 +228,9 @@ By convention, reducers often take this form:
 function reducer(state, action) {
   switch (action.type) {
     case 'some-action': {
-      // return some new state
+      // return some new state(with returnss)
+      //a reducer uses a return to modify the state value instead of a break to just exit the switch
+
     }
     case 'some-other-action': {
       // return some other new state
@@ -244,6 +254,7 @@ The _switch_ statement is a popular convention, but it's optional. You can write
 Another example:
 
 ```js
+//legit but switch is superior
 const reducer = (state, action) => {
   if (action.type === 'some-action') {
     return 'hieee';
@@ -298,6 +309,30 @@ const LightSwitch = () => {
     </>
   );
 };
+
+/////
+const reducer = ( state, action ) => {
+  switch (action.type) {
+    case: 'TOGGLE_LIGHT': {
+      return !state;
+    }
+    default: 
+      throw new Error('wut?');
+  }
+
+}
+const LightSwitch = () => {
+  const [state, dispatch] = React.useReducer(reducer, false);
+
+  return (
+    <>
+      Light is {state ? 'on' : 'off'}.
+      <button onClick={() => dispatch('TOGGLE_LIGHT')}>
+        Toggle
+      </button>
+    </>
+  );
+};
 ```
 
 ---
@@ -325,6 +360,49 @@ function App() {
     </form>
   );
 }
+
+/////
+const reducer = (state, action) => {
+  switch (action.type) {
+    case: 'REQUEST_DATA': {
+      return 'loading';
+      //could be used to show a loading bar
+    }
+    case: 'RECEIVE_DATA': {
+      return 'idle';
+      //could be remove loading bar etc
+    }
+    //is the error for if the data doesn't come through
+    case: 'RECEIVE_ERROR': {
+      return 'error';
+    }
+    default: //this error is for bad action type
+      throw new Error('Error: Unrecognized Action');
+  }
+}
+function App() {
+  const [state , dispatch] = React.useReducer(reducer, 'idle');
+
+  return (
+    <form
+      onSubmit={() => {
+        dispatch('REQUEST_DATA');
+
+        getStatusFromServer()
+          .then(() => {
+            dispatch('RECEIVE_DATA');
+          })
+          .catch(() => {
+            dispatch('RECEIVE_ERROR');
+            //alternate {type:'RECEIVE_ERROR'} hence action.type, defaults to
+          });
+      }}
+    >
+      Status is: {state}
+      <button>Submit</button>
+    </form>
+  );
+}
 ```
 
 ---
@@ -346,6 +424,48 @@ export const ModalProvider = ({ children }) => {
     </ModalContext.Provider>
   );
 };
+
+/////
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case: 'OPEN_MODAL': {
+      return action.modal; 
+    }
+    case: 'CLOSE_MODAL': {
+      return null;
+    }
+    default: 
+      throw new Error('Unrecognized Action');
+  }
+}
+
+export const ModalContext = React.createContext(null);
+
+export const ModalProvider = ({ children }) => {
+
+  const [state, dispatch] = React.useReducer(reducer, null);
+
+//passes particular modal
+  const openModal = modal => dispatch({type:'OPEN_MODAL', modal})
+  const closeModal = modal => dispatch({type:'CLOSE_MODAL'})
+//allows flexibility, can call these for any given modal
+  return (
+    <ModalContext.Provider
+      value={{
+        currentModal: state,
+        openModal,
+        closeModal
+      }}
+    >
+      {children}
+    </ModalContext.Provider>
+  );
+};
+
+//eg
+// <button onClick={() => openModal('login')}>signin </button>
+//on OPEN_MODULE state becomes 'login'
 ```
 
 ---
@@ -388,6 +508,9 @@ function grantHalfBean(someObject) {
 const updatedObj = grantHalfBean(obj);
 
 console.log(obj === updatedObj);
+//==true --> updateObj is not a copy, it's a reference to the original object. 
+//basically it just points to the original obj and shows us it's value
+
 ```
 
 ---
@@ -450,11 +573,14 @@ const initialState = {
 };
 
 function reducer(state, action) {
+  //only one case so if is fine (switch for conistency meybe tho)
   if (action.type === 'increment-beans') {
     return {
-      numOfButtons: state.numOfButtons,
+      numOfButtons: state.numOfButtons,// but we don't want to touch this....
       numOfBeans: state.numOfBeans + 0.5,
     };
+  } else {
+    //handle the default error biz
   }
 
   return state;
@@ -473,6 +599,7 @@ const initialState = {
   numOfBlasters: 8,
 };
 
+//a deep copy rather than just a reference (...state alone would just return a copy of the whole state given)
 function reducer(state, action) {
   if (action.type === 'increment-beans') {
     return {
@@ -522,6 +649,55 @@ const Game = () => {
     </>
   );
 };
+
+///////
+const initialState = { points: 0, status: 'idle'};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'WIN_POINT' : {
+      return {
+        ...state,
+        points: state.points + 1,
+      };
+    }
+    case 'LOSE_POINT' : {
+      return {
+        ...state,
+        points: state.points - 1,
+      };
+    }
+    case 'START_GAME' : {
+      return {
+        ...state,
+        status: 'playing',
+        //trailing commas are good practice, makes future additions easier
+      };
+    }
+    //could also have reset that returns initialstate
+    default:
+      throw new Error('beef');
+  }
+}
+
+const Game = () => {
+  const [state, dispatch] = React.useReducer(reducer, initialState);
+  const {points, status} = state; //destructured: saves doing state.points & state.status etc
+  return (
+    <>
+      Your score: {points}.
+      {status === 'playing' && (
+        <>
+          <button onClick={() => dispatch({type: 'WIN_POINT'})}>🍓</button>
+          <button onClick={() => dispatch({type: 'LOSE_POINT'})}>💀</button>
+        </>
+      )}
+      <button onClick={() => dispatch({type: 'START_GAME'})}>
+       Start game
+      </button>
+    </>
+  );
+};
 ```
 
 ---
@@ -561,6 +737,74 @@ const SignUpForm = () => {
           setFirstName('');
           setLastName('');
           setEmail('');
+        }}
+      >
+        Reset
+      </button>
+    </form>
+  );
+};
+
+///////
+
+import sendDataToServer from './some-madeup-place';
+import FormField from './some-other-madeup-place';
+
+const initialState = {
+  firstName: '',
+  lastName: '',
+  email: '',
+}
+
+const reducer = (action, state) => {
+  switch (action.type){
+    case 'update-field': {
+      return {
+        ...state,
+        [action.key]: action.value,
+      }
+    }
+    case 'reset-form': {
+      return initialState;
+    }
+    default:
+      throw new Error('errar');
+  }
+}
+
+const SignUpForm = () => {
+
+  const [state, dispatch] = React.useReducer(reducer, initialState)
+
+  const {firstName, lastName, email} = state;
+
+  const updateField = (key, value) =>
+    dispatch({ type: 'update-field', key, value });
+
+
+  return (
+    <form onSubmit={sendDataToServer}>
+      <FormField
+        label="First Name"
+        value={firstName}
+        onChange={ev => dispatch('firstName', ev.target.value)}
+      />
+      <FormField
+        label="Last Name"
+        value={lastName}
+        onChange={ev => dispatch('lastName', ev.target.value)}
+      />
+      <FormField
+        label="Email"
+        value={email}
+        onChange={ev => dispatch('email', ev.target.value)}
+      />
+
+      <button>Submit</button>
+      <button
+        onClick={ev => {
+          ev.preventDefault();
+          dispatch({type:'reset-form'});
         }}
       >
         Reset

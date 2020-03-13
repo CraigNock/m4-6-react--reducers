@@ -23,7 +23,7 @@ Packages are **solutions to problems**.
 ---
 
 # Modals
-
+//think overlay
 ---
 
 <img src='./assets/modal-1.png' />
@@ -86,7 +86,7 @@ Keep an eye on what prominent folks are using and recommending.
 
 ### 4. Suitability
 
-Does it do what you need? Is it accessible?
+Does it do what you need? Is it accessible?(both 'accessibility' and ease to use)
 
 ---
 
