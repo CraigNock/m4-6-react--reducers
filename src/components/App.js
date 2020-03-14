@@ -15,7 +15,7 @@ function App() {
     fetch('/api/seat-availability')
       .then(res => res.json())
       .then(data => {
-        console.log(data);
+        // console.log(data);
         receiveSeatInfoFromServer(data);
       });
 // eslint-disable-next-line
@@ -25,6 +25,7 @@ function App() {
     <>
       <GlobalStyles />
       <p>we got {numOfRows} rows here</p>
+      <TicketWidget />
     </>
   );
 }

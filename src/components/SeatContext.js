@@ -13,8 +13,9 @@ const reducer = (state, action) => {
     switch (action.type) {
         case 'RECEIVE-SEAT-DATA-FROM-SERVER': {
             return {
+                ...state,
                 hasLoaded: true,
-                seats: action.bookedSeats,
+                seats: action.seats,
                 numOfRows: action.numOfRows,
                 seatsPerRow: action.seatsPerRow,
             };
