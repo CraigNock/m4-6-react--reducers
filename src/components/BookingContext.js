@@ -30,10 +30,11 @@ const reducer = (state,action) => {
       return {
         ...state,
         status: 'error',
+        error: action.error,
       };
       case 'BOOKING-SUCCESS':
       return {
-        ...state,
+        ...initialState,
         status: 'purchased',
       };
       case 'CANCEL-BOOKING':
@@ -66,6 +67,22 @@ export const BookingProvider = ({ children }) => {
     })
   };
 
+  const bookingSuccess = () => {
+    console.log('success');
+    dispatch({
+      type:'BOOKING-SUCCESS',
+    })
+  };
+
+  const bookingError = (message) => {
+    console.log('error');
+    dispatch({
+      type:'BOOKING-ERROR',
+      error: message,
+    })
+  };
+
+
   const cancelBookingProcess = () => {
     console.log('cancel');
     dispatch({
@@ -80,6 +97,8 @@ export const BookingProvider = ({ children }) => {
         actions: {
           beginBookingProcess,
           submitCardInfo,
+          bookingSuccess,
+          bookingError,
           cancelBookingProcess,
         }
       }}

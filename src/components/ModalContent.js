@@ -37,21 +37,38 @@ const useStyles = makeStyles({
 });
 
 
-const ModalContent = ({seatId, price, submitCardInfo}) => {
+const ModalContent = ({status, error, seatId, price, submitCardInfo, bookingSuccess, bookingError}) => {
 
   const row = seatId? seatId[0] : '' ;
   const num = seatId? seatId[2] : '' ;
-  console.log('modalseatId ', seatId);
+  // console.log('modalseatId ', seatId);
 
-  const [creditcard, setCreditCard] = React.useState('');
-  const [expiry, setExpiry] = React.useState('');
+  const [creditCard, setCreditCard] = React.useState('');
+  const [expiration, setExpiration] = React.useState('');
 
   const submitPurchase = (ev) => {
     ev.preventDefault();
     console.log('purchase attempt');
     submitCardInfo();
-
-    
+    fetch('/api/book-seat', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+        "Accept" : "application/json"
+      },
+      body:JSON.stringify({seatId, creditCard, expiration})
+    })
+      
+    .then(data => data.json())
+    .then(data => {
+      console.log(data);
+      if(data.success){
+        bookingSuccess()
+      } else {
+        console.log(data.message);
+        bookingError(data.message);
+      };
+    })
   };
 
 
@@ -73,7 +90,7 @@ const ModalContent = ({seatId, price, submitCardInfo}) => {
             <TableRow className={classes.tableRow}>
               <TableCell align="center">{row}</TableCell>
               <TableCell align="center">{num}</TableCell>
-              <TableCell align="center">{price}</TableCell>
+              <TableCell align="center">${price}</TableCell>
             </TableRow>
           </TableBody>
         </Table>
@@ -97,7 +114,7 @@ const ModalContent = ({seatId, price, submitCardInfo}) => {
         name='card-exp' 
         label="Expiration" 
         variant="outlined"
-        onChange={(ev)=> setExpiry(ev.target.value)}
+        onChange={(ev)=> setExpiration(ev.target.value)}
         />
         <Button 
         type='submit' 
@@ -107,6 +124,7 @@ const ModalContent = ({seatId, price, submitCardInfo}) => {
         >
             Purchase
         </Button>
+        <p> {error? error : ''} </p>
       </StyledForm>
     </FormControl>
   </Container>
@@ -127,6 +145,12 @@ const StyledForm = styled.form`
   Button {
     height: 3.5rem;
     margin-top: 1rem;
+  }
+  p {
+    margin-top: .5rem;
+    font-size: .75rem;
+    font-style: italic;
+    color: orange;
   }
 `;
 
