@@ -7,14 +7,14 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { getRowName, getSeatNum } from '../helpers';
 import { range } from '../utils';
 import {SeatContext} from './SeatContext'
-// import seatImgSrc from '../assets/seat-available.svg'
 import Seat from './Seat';
 
 const TicketWidget = () => {
-  const {state} = React.useContext(SeatContext);
+  const {state, actions: {markSeatSelected}} = React.useContext(SeatContext);
   // console.log(state);
-  const {hasLoaded, seats, numOfRows, seatsPerRow} = state;
+  const {hasLoaded, seats, numOfRows, seatsPerRow,} = state;
   // console.log(seats);
+
 
   if (!hasLoaded) {
     return <CircularProgress />
@@ -38,6 +38,9 @@ const TicketWidget = () => {
                   seatId={seatId}
                   price={seat.price}
                   booked={seat.isBooked}
+                  markSeatSelected={markSeatSelected}
+                  
+
                 />
               );
             })}

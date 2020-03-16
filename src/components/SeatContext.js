@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const SeatContext = React.createContext();
+export const SeatContext = React.createContext(null);
 
 const initialState = {
     hasLoaded: false,
@@ -20,6 +20,12 @@ const reducer = (state, action) => {
                 seatsPerRow: action.seatsPerRow,
             };
         }
+        case 'MARK-SEAT-SELECTED': {
+            return {
+                ...state,
+                // seats: {...state.seats, [action.seatId]:{id:seatId, isBooked: true}}
+            };
+        }
             
         default:
             return new Error(`action: "${action.type}" not recognised`)
@@ -34,14 +40,22 @@ export const SeatProvider = ({children}) => {
             type: 'RECEIVE-SEAT-DATA-FROM-SERVER',
             ...data,
         });
-    }
+    };
+
+    const markSeatSelected = seatId => {
+        dispatch({
+            type: 'MARK-SEAT-SELECTED',
+            seatId: seatId,
+        });
+    };
+
 
     return (
         <SeatContext.Provider
             value={{
                 state,
                 actions: {
-                    receiveSeatInfoFromServer
+                    receiveSeatInfoFromServer, markSeatSelected
                 },
             }}
         >

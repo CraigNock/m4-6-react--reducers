@@ -4,11 +4,12 @@ import React from 'react';
 import GlobalStyles from './GlobalStyles';
 import {SeatContext} from './SeatContext';
 import TicketWidget from './TicketWidget';
+import PurchaseModal from './PurchaseModal';
 
 function App() {
   const {
     actions:{receiveSeatInfoFromServer},
-    state: { numOfRows },
+    // state: { numOfRows },
   } = React.useContext(SeatContext);
 
   React.useEffect(()=> {
@@ -24,7 +25,7 @@ function App() {
   return (
     <>
       <GlobalStyles />
-      <p>we got {numOfRows} rows here</p>
+      <PurchaseModal/>
       <TicketWidget />
     </>
   );
