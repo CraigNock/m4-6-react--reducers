@@ -376,7 +376,7 @@ function App() {
 }
 ```
 
-### Exercise 3: Initial UI
+## Exercise 3: Initial UI
 
 Let's import the `TicketWidget` component, and render it inside `App`:
 
@@ -428,7 +428,7 @@ const SomeComponent = () => {
 
 _HINT:_ You'll need to use `React.useContext(SeatContext)` to get the data.
 
-### Exercise 4: Polishing this UI
+## Exercise 4: Polishing this UI
 
 There are a few things that this UI doesn't yet do:
 
@@ -452,7 +452,7 @@ filter: grayscale(100%);
 
 _HINT:_ For the tooltip, check out the Tippy.js/react docs! https://www.npmjs.com/package/@tippy.js/react
 
-### Exercise 5: Preparing for purchasing
+## Exercise 5: Preparing for purchasing
 
 Right now, you're probably rendering a bunch of seat images inside the `TicketWidget` component. We need to do a bit of prep work.
 
@@ -483,7 +483,7 @@ Inside your `Seat` component, wrap the image in a `<button>`. This is important 
 
 We can add `disabled={true}` to this button if the seat is booked.
 
-### Exercise 6: Purchase state
+## Exercise 6: Purchase state
 
 Let's watch the GIF from the beginning again:
 
@@ -526,9 +526,9 @@ Here are the steps you should complete for this exercise. Because we've done som
 - Create an action with the type `begin-booking-process`, and dispatch that action when clicking an available seat
 - Update the reducer to update the state accordingly, when `begin-booking-process` is dispatched.
 
-### Exercise 7: Purchasing!
+## Exercise 7: Purchasing!
 
-#### Exercise 7A: Showing and hiding the modal
+### Exercise 7A: Showing and hiding the modal
 
 When clicking a seat, we should open a modal. Let's create that now.
 
@@ -555,7 +555,7 @@ This way, the `PurchaseModal` will only be shown when the user has an active sea
 
 At this point, you should be able to see a modal by clicking a seat, and dismiss the modal to return to the original view.
 
-### Exercise 7B: Populating the modal
+## Exercise 7B: Populating the modal
 
 The modal should show a little table with the seat information, as well as a form for the user to enter their credit cards. Browse the Material UI components to find some helpful pieces. Visit https://material-ui.com/, and click the hamburger menu in the top left to show the sidebar. Then, expand "Components" to see a categorized list of available components.
 
@@ -574,7 +574,7 @@ const [expiration, setExpiration] = React.useState('');
 
 You should update this state when the user types in the text inputs, so that the React state is always in sync with what's shown on the page form.
 
-### Exercise 7C: Sending the request
+## Exercise 7C: Sending the request
 
 When the user clicks "Purchase", we want to make a request to our backend. The top of this README includes the list of API endpoints and how to use them. Make a POST to `/api/book-seat` with the specified data.
 
@@ -619,7 +619,7 @@ If the server returns a successful message, we can dispatch the `purchase-ticket
 
 Notice that we've unset `selectedSeatId` and `price`; now that we've purchased the seat, we can close that modal!
 
-### Exercise 8: Finishing touches
+## Exercise 8: Finishing touches
 
 We're in pretty good shape! There are a few final things we should add though.
 
@@ -647,13 +647,13 @@ This is a _very_ long workshop, so it is unlikely that you'll have time for thes
 
 Just in case, though, some are provided:
 
-### Stretch goal 1: Decorated seats
+## Stretch goal 1: Decorated seats
 
 After purchasing a seat, it becomes grey, the same as any other unavailable seat. Ideally, this seat would be visually distinct, to indicate that the current user has purchased it! Maybe a checkmark could be shown on top of it?
 
 ![Checkmark showing the previously-purchased seat](./__lecture/assets/purchased-indicator.png)
 
-### Stretch goal 2: Purchasing multiple seats
+## Stretch goal 2: Purchasing multiple seats
 
 Right now, seats can only be purchased one at a time. We can imagine maybe someone would like to buy multiple seats at once.
 

@@ -26,7 +26,7 @@ const reducer = (state,action) => {
         ...state,
         status: 'awaiting-response',
       };
-      case 'ERROR-CARD-INFO':
+      case 'BOOKING-ERROR':
       return {
         ...state,
         status: 'error',
@@ -51,11 +51,18 @@ export const BookingProvider = ({ children }) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
   const beginBookingProcess = (seatId, price) => {
-    console.log('book');
+    // console.log('book- seatId', seatId, 'price', price);
     dispatch({
       type:'BEGIN-BOOKING-PROCESS',
       selectedSeatId: seatId,
       price: price,
+    })
+  };
+
+  const submitCardInfo = () => {
+    console.log('submit');
+    dispatch({
+      type:'SUBMIT-CARD-INFO',
     })
   };
 
@@ -72,6 +79,7 @@ export const BookingProvider = ({ children }) => {
         state:{...state}, 
         actions: {
           beginBookingProcess,
+          submitCardInfo,
           cancelBookingProcess,
         }
       }}

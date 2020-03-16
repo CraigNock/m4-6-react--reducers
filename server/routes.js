@@ -7,7 +7,9 @@ const NUM_OF_ROWS = 8;
 const SEATS_PER_ROW = 12;
 const BASE_PRICE = 225;
 const PRICE_INCREMENT_PER_ROW = -10;
+
 let state;
+
 router.get('/api/seat-availability', (req, res) => {
   if (!state) {
     state = {
@@ -22,7 +24,10 @@ router.get('/api/seat-availability', (req, res) => {
     });
   }, 750);
 });
+
+
 let lastBookingAttemptSucceeded = false;
+
 router.post('/api/book-seat', async (req, res) => {
   const { seatId, creditCard, expiration } = req.body;
   if (!state) {

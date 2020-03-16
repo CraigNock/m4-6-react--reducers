@@ -11,9 +11,9 @@ import {BookingContext} from './BookingContext';
 
 const Seat = ({seatId, price, booked,}) => {
     const {actions: {beginBookingProcess}} = React.useContext(BookingContext);
-
+    // console.log('seat-seatId', seatId, price);
     return (
-        <SeatWrapper disabled={booked} onClick={() => beginBookingProcess({seatId, price})} >
+        <SeatWrapper disabled={booked} onClick={() => beginBookingProcess(seatId, price)} >
             <Tippy content={`Seat: ${seatId} at $${price}`}>
                 <SeatImg  src={seatImgSrc} alt='seat' />
             </Tippy>
