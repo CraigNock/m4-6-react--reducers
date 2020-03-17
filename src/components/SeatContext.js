@@ -20,10 +20,10 @@ const reducer = (state, action) => {
                 seatsPerRow: action.seatsPerRow,
             };
         }
-        case 'MARK-SEAT-SELECTED': {
+        case 'MARK-SEAT-UNAVAILABLE': {
             return {
                 ...state,
-                // seats: {...state.seats, [action.seatId]:{id:seatId, isBooked: true}}
+                seats: {...state.seats, [action.seatId]:{id:action.seatId, isBooked: true}}
             };
         }
             
@@ -42,20 +42,21 @@ export const SeatProvider = ({children}) => {
         });
     };
 
-    const markSeatSelected = seatId => {
+    const markSeatUnavailable = (seatId) => {
+        console.log('unavailable ', seatId);
         dispatch({
-            type: 'MARK-SEAT-SELECTED',
+            type: 'MARK-SEAT-UNAVAILABLE',
             seatId: seatId,
         });
     };
-
 
     return (
         <SeatContext.Provider
             value={{
                 state,
                 actions: {
-                    receiveSeatInfoFromServer, markSeatSelected
+                    receiveSeatInfoFromServer, 
+                    markSeatUnavailable,
                 },
             }}
         >

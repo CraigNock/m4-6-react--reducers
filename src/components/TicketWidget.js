@@ -41,7 +41,6 @@ const TicketWidget = () => {
                   booked={seat.isBooked}
                   markSeatSelected={markSeatSelected}
                   
-
                 />
               );
             })}
@@ -59,6 +58,7 @@ const Wrapper = styled.div`
   border-radius: 3px;
   padding: 8px;
   width: fit-content;
+  margin: 10vh auto;
 `;
 
 const Row = styled.div`
@@ -75,12 +75,5 @@ const RowLabel = styled.div`
   padding-right:.5rem;
 `;
 
-// const SeatWrapper = styled.button`
-//   border: none;
-//   padding: 5px;
-//   :disabled {
-//     filter: grayscale(100%);
-//   }
-// `;
 
 export default TicketWidget;

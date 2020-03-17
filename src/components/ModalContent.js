@@ -1,9 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-
 import { makeStyles } from '@material-ui/core/styles';
-// import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -14,9 +12,10 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
 import FormControl from '@material-ui/core/FormControl';
-// import InputLabel from '@material-ui/core/InputLabel';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+
+import {SeatContext} from './SeatContext';
 
 
 const useStyles = makeStyles({
@@ -36,8 +35,8 @@ const useStyles = makeStyles({
   },
 });
 
-
 const ModalContent = ({status, error, seatId, price, submitCardInfo, bookingSuccess, bookingError}) => {
+  const {actions:{markSeatUnavailable}} = React.useContext(SeatContext);
 
   const row = seatId? seatId[0] : '' ;
   const num = seatId? seatId[2] : '' ;
@@ -63,7 +62,8 @@ const ModalContent = ({status, error, seatId, price, submitCardInfo, bookingSucc
     .then(data => {
       console.log(data);
       if(data.success){
-        bookingSuccess()
+        bookingSuccess();
+        markSeatUnavailable(seatId);
       } else {
         console.log(data.message);
         bookingError(data.message);
