@@ -48,6 +48,7 @@ function App() {
       <GlobalStyles />
       <PurchaseModal/>
       <TicketWidget />
+      
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',

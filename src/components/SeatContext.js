@@ -23,7 +23,8 @@ const reducer = (state, action) => {
         case 'MARK-SEAT-UNAVAILABLE': {
             return {
                 ...state,
-                seats: {...state.seats, [action.seatId]:{id:action.seatId, isBooked: true}}
+                seats: {...state.seats, [action.seatId]:{id:action.seatId, isBooked: true, purchased:true}},
+                
             };
         }
             
@@ -44,6 +45,7 @@ export const SeatProvider = ({children}) => {
 
     const markSeatUnavailable = (seatId) => {
         console.log('unavailable ', seatId);
+        //make checkmark visible
         dispatch({
             type: 'MARK-SEAT-UNAVAILABLE',
             seatId: seatId,

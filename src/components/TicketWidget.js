@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import CircularProgress from '@material-ui/core/CircularProgress';
-// import Tippy from '@tippy.js/react';
-// import 'tippy.js/dist/tippy.css';
+// import {Icon} from 'react-icons-kit';
+// import {checkCircle} from 'react-icons-kit/feather/checkCircle';
 
 import { getRowName, getSeatNum } from '../helpers';
 import { range } from '../utils';
@@ -10,7 +10,7 @@ import {SeatContext} from './SeatContext'
 import Seat from './Seat';
 
 const TicketWidget = () => {
-  const {state, actions: {markSeatSelected}} = React.useContext(SeatContext);
+  const {state,} = React.useContext(SeatContext);
   // console.log(state);
   const {hasLoaded, seats, numOfRows, seatsPerRow,} = state;
   // console.log(seats);
@@ -25,7 +25,6 @@ const TicketWidget = () => {
       
       {range(numOfRows).map(rowIndex => {
         const rowName = getRowName(rowIndex);
-
         return (
           <Row key={rowIndex}>
             <RowLabel>Row {rowName} </RowLabel>
@@ -34,20 +33,24 @@ const TicketWidget = () => {
               // console.log('seatId first', seatId);
               const seat = seats[seatId];
               return (
-                <Seat
-                  key={seatId}
-                  seatId={seatId}
-                  price={seat.price}
-                  booked={seat.isBooked}
-                  markSeatSelected={markSeatSelected}
-                  
-                />
+                  <Seat
+                    key={seatId}
+                    seatId={seatId}
+                    price={seat.price}
+                    booked={seat.isBooked}
+                    purchased={seat.purchased}
+                    
+                  />
               );
             })}
           </Row>
         );
       })}
-      
+      <StyledPurchaseButton
+      // onCLick={()=>beginBookingProcess(selectedSeats)}
+      >
+        Purchase
+      </StyledPurchaseButton>
     </Wrapper>
   );
 };
@@ -59,6 +62,7 @@ const Wrapper = styled.div`
   padding: 8px;
   width: fit-content;
   margin: 10vh auto;
+  text-align: center;
 `;
 
 const Row = styled.div`
@@ -75,5 +79,14 @@ const RowLabel = styled.div`
   padding-right:.5rem;
 `;
 
+const StyledPurchaseButton = styled.button`
+  border: 2px solid forestgreen;
+  border-radius: 5px;
+  padding: .5rem 2rem;
+  margin: 1rem;
+  font-weight: bold;
+  font-size: 1rem;
+  color: forestgreen;
+`;
 
 export default TicketWidget;

@@ -659,7 +659,7 @@ Right now, seats can only be purchased one at a time. We can imagine maybe someo
 
 Update the UI so that clicking a seat "selects" it, and as long as at least 1 seat is selected, a "Buy" button is shown, below the seating plan. Clicking the "Buy" button opens the modal, and all selected seats are shown in the modal. The total price should equal to the sum total of all selected seats.
 
-### Stretch goal 3: Responsive design
+## Stretch goal 3: Responsive design
 
 Expose the development server to the internet using something like [ngrok](https://ngrok.com/), and access the page on your phone. Is it usable? Does it look right?
 
