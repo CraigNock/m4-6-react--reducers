@@ -29,14 +29,14 @@ router.get('/api/seat-availability', (req, res) => {
 let lastBookingAttemptSucceeded = false;
 
 router.post('/api/book-seat', async (req, res) => {
-  const { seatId, creditCard, expiration } = req.body;
-  // console.log(seatId, creditCard, expiration);
+  const { selectedSeatIds, creditCard, expiration } = req.body;
+  // console.log(selectedSeatIds, creditCard, expiration);
   if (!state) {
     state = {
       seats: getInitialSeatData(),
     };
   }
-  const isAlreadyBooked = !!state.seats[seatId].isBooked;
+  const isAlreadyBooked = !!state.seats[selectedSeatIds].isBooked;
   await delay(Math.random() * 3000);
   if (!creditCard || !expiration) {
     return res.status(400).json({
@@ -60,6 +60,8 @@ router.post('/api/book-seat', async (req, res) => {
     success: true,
   });
 });
+
+
 //////// HELPERS
 const getRowName = rowIndex => {
   return String.fromCharCode(65 + rowIndex);

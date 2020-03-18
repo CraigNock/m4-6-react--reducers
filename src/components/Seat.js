@@ -10,22 +10,21 @@ import seatImgSrc from '../assets/seat-available.svg';
 import {BookingContext} from './BookingContext';
 
 
-const Seat = ({seatId, price, booked, purchased}) => {
+const Seat = ({seatId, price, booked, selected, markSelected}) => {
     const {actions: {beginBookingProcess}} = React.useContext(BookingContext);
     // console.log('seat-seatId', seatId, price);
-
-    const selectSeatForPurchase = () => {
-
-    };
-
+    
     return (
         <StyledSeatDiv>
-            <SeatButton disabled={booked} onClick={() => beginBookingProcess(seatId, price)} >
+            <SeatButton disabled={booked} onClick={() => {
+                selected? markSelected(seatId, false) : markSelected(seatId, true);
+                beginBookingProcess(seatId, price);
+                } }>
                 <Tippy content={`Seat: ${seatId} at $${price}`}>
                     <SeatImg src={seatImgSrc} alt='seat' />
                 </Tippy>
             </SeatButton>
-            <StyledIconDiv style={ purchased? {display: 'block'} : {display: 'none'} }>
+            <StyledIconDiv style={ selected? {display: 'block'} : {display: 'none'} }>
                 <Icon icon={checkCircle}/>
             </StyledIconDiv>
         </StyledSeatDiv>

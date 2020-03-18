@@ -1,24 +1,30 @@
 import React from 'react';
 import styled from 'styled-components';
 import CircularProgress from '@material-ui/core/CircularProgress';
-// import {Icon} from 'react-icons-kit';
-// import {checkCircle} from 'react-icons-kit/feather/checkCircle';
 
 import { getRowName, getSeatNum } from '../helpers';
 import { range } from '../utils';
-import {SeatContext} from './SeatContext'
+import {SeatContext} from './SeatContext';
+import {BookingContext} from './BookingContext';
 import Seat from './Seat';
 
 const TicketWidget = () => {
-  const {state,} = React.useContext(SeatContext);
+  const {state, actions:{markSelected}} = React.useContext(SeatContext);
   // console.log(state);
   const {hasLoaded, seats, numOfRows, seatsPerRow,} = state;
   // console.log(seats);
-
+  const {actions: {beginPurchase}} = React.useContext(BookingContext);
 
   if (!hasLoaded) {
     return <CircularProgress />
   }
+
+
+  // const purchaseTime = () => {
+
+  //   beginPurchase();
+  // }
+
 
   return (
     <Wrapper>
@@ -38,7 +44,8 @@ const TicketWidget = () => {
                     seatId={seatId}
                     price={seat.price}
                     booked={seat.isBooked}
-                    purchased={seat.purchased}
+                    selected={seat.selected}
+                    markSelected={markSelected}
                     
                   />
               );
@@ -47,7 +54,7 @@ const TicketWidget = () => {
         );
       })}
       <StyledPurchaseButton
-      // onCLick={()=>beginBookingProcess(selectedSeats)}
+      onClick={() => beginPurchase()}
       >
         Purchase
       </StyledPurchaseButton>

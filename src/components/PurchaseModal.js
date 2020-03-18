@@ -19,19 +19,19 @@ const PurchaseModal = () => {
   const {
     status,
     error,
-    selectedSeatId, 
+    selectedSeatIds, 
     price,
   } = state;
 
   return (
     <Dialog
-    open={selectedSeatId !== null} 
+    open={status === 'begin-purchase'} 
     onClose={cancelBookingProcess}
     >
       <ModalContent
       status={status}
       error={error}
-      seatId={selectedSeatId}
+      selectedSeatIds={selectedSeatIds}
       price={price}
       submitCardInfo={submitCardInfo}
       bookingSuccess={bookingSuccess}

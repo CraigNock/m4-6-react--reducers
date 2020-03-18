@@ -23,11 +23,19 @@ const reducer = (state, action) => {
         case 'MARK-SEAT-UNAVAILABLE': {
             return {
                 ...state,
-                seats: {...state.seats, [action.seatId]:{id:action.seatId, isBooked: true, purchased:true}},
+                seats: {...state.seats, [action.seatId]:{id:action.seatId, isBooked: true, selected:true}},
                 
             };
         }
-            
+        case 'MARK-SELECTED': {
+            return {
+                ...state,
+                seats: {
+                    ...state.seats, 
+                    [action.seatId]:{id:action.seatId, selected:action.toggle}},
+                
+            };
+        }
         default:
             return new Error(`action: "${action.type}" not recognised`)
     }
@@ -44,12 +52,19 @@ export const SeatProvider = ({children}) => {
     };
 
     const markSeatUnavailable = (seatId) => {
-        console.log('unavailable ', seatId);
-        //make checkmark visible
+        // console.log('unavailable ', seatId);
         dispatch({
             type: 'MARK-SEAT-UNAVAILABLE',
             seatId: seatId,
         });
+    };
+
+    const markSelected = (seatId, toggle) => {
+        dispatch({
+            type: 'MARK-SELECTED',
+            seatId: seatId,
+            toggle: toggle,
+        })
     };
 
     return (
@@ -59,6 +74,7 @@ export const SeatProvider = ({children}) => {
                 actions: {
                     receiveSeatInfoFromServer, 
                     markSeatUnavailable,
+                    markSelected,
                 },
             }}
         >

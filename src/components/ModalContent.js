@@ -35,12 +35,28 @@ const useStyles = makeStyles({
   },
 });
 
-const ModalContent = ({status, error, seatId, price, submitCardInfo, bookingSuccess, bookingError}) => {
+const ModalContent = ({status, error, selectedSeatIds, price, submitCardInfo, bookingSuccess, bookingError}) => {
+  
   const {actions:{markSeatUnavailable}} = React.useContext(SeatContext);
 
-  const row = seatId? seatId[0] : '' ;
-  const num = seatId? seatId[2] : '' ;
+  // const row = selectedSeatIds? selectedSeatIds[0] : '' ;
+  // const num = selectedSeatIds? selectedSeatIds[2] : '' ;
   // console.log('modalseatId ', seatId);
+
+  const row = 1;
+  const num = 2;
+
+  const seatsCheckout = () => {
+    selectedSeatIds.forEach(seat => {
+      row = ;
+      console.log(seat);
+      //do your row etc and return all the table crap
+    });
+  };
+  
+////do the thing here and in routers
+
+
 
   const [creditCard, setCreditCard] = React.useState('');
   const [expiration, setExpiration] = React.useState('');
@@ -55,7 +71,7 @@ const ModalContent = ({status, error, seatId, price, submitCardInfo, bookingSucc
         "Content-Type": "application/json",
         "Accept" : "application/json"
       },
-      body:JSON.stringify({seatId, creditCard, expiration})
+      body:JSON.stringify({selectedSeatIds, creditCard, expiration})
     })
       
     .then(data => data.json())
@@ -63,7 +79,7 @@ const ModalContent = ({status, error, seatId, price, submitCardInfo, bookingSucc
       console.log(data);
       if(data.success){
         bookingSuccess();
-        markSeatUnavailable(seatId);
+        markSeatUnavailable(selectedSeatIds);
       } else {
         console.log(data.message);
         bookingError(data.message);
@@ -76,7 +92,7 @@ const ModalContent = ({status, error, seatId, price, submitCardInfo, bookingSucc
   return (
     <Container className={classes.container}>
       <Title>Purchase Ticket</Title>
-      <DialogContent>{`You're purchasing 1 ticket for the price of $${price}`}</DialogContent>
+      <DialogContent>{`You're purchasing ${selectedSeatIds.length} ticket(s) for the price of $${price}`}</DialogContent>
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
           <TableHead>

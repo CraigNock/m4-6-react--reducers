@@ -5,12 +5,9 @@ export const BookingContext = React.createContext(null);
 const initialState = {
   status: 'idle',
   error: null,
-  selectedSeatId: null,
+  selectedSeatIds: [],
   price: null,
 };
-//statuses: idle, seat-selected, awaiting response, error, purchased
-//the different stages of the purchasing process
-//could fit nicely in a reducer...
 
 const reducer = (state,action) => {
   switch (action.type) {
@@ -18,8 +15,13 @@ const reducer = (state,action) => {
       return {
         ...state,
         status: 'seat-selected',
-        selectedSeatId: action.selectedSeatId,
-        price: action.price,
+        selectedSeatIds: action.newSelected,
+        // price: action.price,
+      };
+      case 'BEGIN-PURCHASE-PROCESS':
+      return {
+        ...state,
+        status: 'begin-purchase',
       };
       case 'SUBMIT-CARD-INFO':
       return {
@@ -39,7 +41,7 @@ const reducer = (state,action) => {
       };
       case 'CANCEL-BOOKING':
       return {
-        ...initialState,
+        ...state,
         status: 'idle',
       };
   
@@ -51,14 +53,29 @@ const reducer = (state,action) => {
 export const BookingProvider = ({ children }) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
-  const beginBookingProcess = (seatId, price) => {
+  const beginBookingProcess = (seatId, seatPrice) => {
     // console.log('book- seatId', seatId, 'price', price);
+    const newSelected = [...state.selectedSeatIds];
+    const toggleIndex = newSelected.findIndex(selected => selected.id === seatId);
+
+    if(toggleIndex === -1){
+      newSelected.push({id:seatId, price: seatPrice})
+    } else {
+      newSelected.splice(toggleIndex, 1);
+    }
+    console.log(newSelected);
     dispatch({
       type:'BEGIN-BOOKING-PROCESS',
-      selectedSeatId: seatId,
-      price: price,
+      newSelected: newSelected,
+      // price: price,
     })
   };
+
+  const beginPurchase = () => {
+    dispatch({
+      type: 'BEGIN-PURCHASE-PROCESS'
+    })
+  }
 
   const submitCardInfo = () => {
     console.log('submit');
@@ -82,7 +99,6 @@ export const BookingProvider = ({ children }) => {
     })
   };
 
-
   const cancelBookingProcess = () => {
     console.log('cancel');
     dispatch({
@@ -96,10 +112,12 @@ export const BookingProvider = ({ children }) => {
         state:{...state}, 
         actions: {
           beginBookingProcess,
+          beginPurchase,
           submitCardInfo,
           bookingSuccess,
           bookingError,
           cancelBookingProcess,
+
         }
       }}
     >
