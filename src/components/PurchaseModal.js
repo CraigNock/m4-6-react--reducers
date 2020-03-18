@@ -25,7 +25,7 @@ const PurchaseModal = () => {
 
   return (
     <Dialog
-    open={status === 'begin-purchase'} 
+    open={status === 'begin-purchase' || status === 'awaiting-response' || status === 'error'} 
     onClose={cancelBookingProcess}
     >
       <ModalContent

@@ -39,7 +39,7 @@ const ModalContent = ({status, error, selectedSeatIds, price, submitCardInfo, bo
   
   const {actions:{markSeatUnavailable}} = React.useContext(SeatContext);
   
-  console.log(selectedSeatIds);
+  // console.log(selectedSeatIds);
 
   let sum = () => {
     let num = 0;
@@ -54,7 +54,6 @@ const ModalContent = ({status, error, selectedSeatIds, price, submitCardInfo, bo
     return(
       <>
       {selectedSeatIds.map(seat => {
-        // setTotal(total + seat.price);
         return (
             <TableRow className={classes.tableRow} key={`buyseat${seat.id}`}>
                 <TableCell align="center">{seat.id[0]}</TableCell>
@@ -67,7 +66,6 @@ const ModalContent = ({status, error, selectedSeatIds, price, submitCardInfo, bo
     )
   };
   
-////do the thing here and in routes
 
   const [creditCard, setCreditCard] = React.useState('');
   const [expiration, setExpiration] = React.useState('');
@@ -87,12 +85,12 @@ const ModalContent = ({status, error, selectedSeatIds, price, submitCardInfo, bo
       
     .then(data => data.json())
     .then(data => {
-      console.log(data);
+      // console.log(data);
       if(data.success){
         bookingSuccess();
         markSeatUnavailable(selectedSeatIds);
       } else {
-        console.log(data.message);
+        // console.log(data.message);
         bookingError(data.message);
       };
     })
@@ -115,11 +113,6 @@ const ModalContent = ({status, error, selectedSeatIds, price, submitCardInfo, bo
           </TableHead>
           <TableBody>
             <SeatsCheckout/>
-            {/* <TableRow className={classes.tableRow}>
-              <TableCell align="center">{row}</TableCell>
-              <TableCell align="center">{num}</TableCell>
-              <TableCell align="center">${price}</TableCell>
-            </TableRow> */}
           </TableBody>
         </Table>
     </TableContainer>

@@ -59,10 +59,10 @@ router.post('/api/book-seat', async (req, res) => {
     });
   }
   lastBookingAttemptSucceeded = !lastBookingAttemptSucceeded;
+  // state.seats[seatId].isBooked = true;
   selectedSeatIds.forEach(seat => {
     state.seats[seat.id].isBooked = true;
   })
-  // state.seats[seatId].isBooked = true;
   return res.json({
     success: true,
   });

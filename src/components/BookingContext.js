@@ -16,7 +16,6 @@ const reducer = (state,action) => {
         ...state,
         status: 'seat-selected',
         selectedSeatIds: action.newSelected,
-        // price: action.price,
       };
       case 'BEGIN-PURCHASE-PROCESS':
       return {
@@ -63,11 +62,10 @@ export const BookingProvider = ({ children }) => {
     } else {
       newSelected.splice(toggleIndex, 1);
     }
-    console.log(newSelected);
+    // console.log(newSelected);
     dispatch({
       type:'BEGIN-BOOKING-PROCESS',
       newSelected: newSelected,
-      // price: price,
     })
   };
 
