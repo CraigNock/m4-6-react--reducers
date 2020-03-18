@@ -38,25 +38,36 @@ const useStyles = makeStyles({
 const ModalContent = ({status, error, selectedSeatIds, price, submitCardInfo, bookingSuccess, bookingError}) => {
   
   const {actions:{markSeatUnavailable}} = React.useContext(SeatContext);
+  
+  console.log(selectedSeatIds);
 
-  // const row = selectedSeatIds? selectedSeatIds[0] : '' ;
-  // const num = selectedSeatIds? selectedSeatIds[2] : '' ;
-  // console.log('modalseatId ', seatId);
-
-  const row = 1;
-  const num = 2;
-
-  const seatsCheckout = () => {
+  let sum = () => {
+    let num = 0;
     selectedSeatIds.forEach(seat => {
-      row = ;
-      console.log(seat);
-      //do your row etc and return all the table crap
-    });
+      num = num + seat.price;
+    })
+    return num;
+  };
+  let total = sum();
+
+  const SeatsCheckout = () => {
+    return(
+      <>
+      {selectedSeatIds.map(seat => {
+        // setTotal(total + seat.price);
+        return (
+            <TableRow className={classes.tableRow} key={`buyseat${seat.id}`}>
+                <TableCell align="center">{seat.id[0]}</TableCell>
+                <TableCell align="center">{seat.id[2]}</TableCell>
+                <TableCell align="center">${seat.price}</TableCell>
+            </TableRow>
+        )
+      })}
+      </>
+    )
   };
   
-////do the thing here and in routers
-
-
+////do the thing here and in routes
 
   const [creditCard, setCreditCard] = React.useState('');
   const [expiration, setExpiration] = React.useState('');
@@ -92,7 +103,7 @@ const ModalContent = ({status, error, selectedSeatIds, price, submitCardInfo, bo
   return (
     <Container className={classes.container}>
       <Title>Purchase Ticket</Title>
-      <DialogContent>{`You're purchasing ${selectedSeatIds.length} ticket(s) for the price of $${price}`}</DialogContent>
+      <DialogContent>{`You're purchasing ${selectedSeatIds.length} ticket(s) for the price of $${total}`}</DialogContent>
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
@@ -103,11 +114,12 @@ const ModalContent = ({status, error, selectedSeatIds, price, submitCardInfo, bo
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow className={classes.tableRow}>
+            <SeatsCheckout/>
+            {/* <TableRow className={classes.tableRow}>
               <TableCell align="center">{row}</TableCell>
               <TableCell align="center">{num}</TableCell>
               <TableCell align="center">${price}</TableCell>
-            </TableRow>
+            </TableRow> */}
           </TableBody>
         </Table>
     </TableContainer>

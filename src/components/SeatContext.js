@@ -21,10 +21,13 @@ const reducer = (state, action) => {
             };
         }
         case 'MARK-SEAT-UNAVAILABLE': {
+            let newSeats = {...state.seats};
+            action.selectSeatIds.forEach(seat => {
+                newSeats = {...newSeats, [seat.id]:{id:seat.id, isBooked: true, selected:true}};
+            })
             return {
                 ...state,
-                seats: {...state.seats, [action.seatId]:{id:action.seatId, isBooked: true, selected:true}},
-                
+                seats: newSeats,
             };
         }
         case 'MARK-SELECTED': {
@@ -51,11 +54,11 @@ export const SeatProvider = ({children}) => {
         });
     };
 
-    const markSeatUnavailable = (seatId) => {
+    const markSeatUnavailable = (selectSeatIds) => {
         // console.log('unavailable ', seatId);
         dispatch({
             type: 'MARK-SEAT-UNAVAILABLE',
-            seatId: seatId,
+            selectSeatIds: selectSeatIds,
         });
     };
 
